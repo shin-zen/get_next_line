@@ -6,7 +6,7 @@
 #    By: skodama <skodama@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/12/30 22:51:49 by skodama           #+#    #+#              #
-#    Updated: 2020/12/31 02:36:44 by skodama          ###   ########.fr        #
+#    Updated: 2020/12/31 11:51:37 by skodama          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -617,6 +617,348 @@ tb5:
 	@echo BUFFER_SIZE=-100 error
 	@gcc ${CFLAGS} -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_io_file.c
 	@valgrind --leak-check=full --show-leak-kinds=all -s ./a.out ${TESTDIR}/long_line.txt
+
+# for guacamole
+tg1:
+	@clear
+	@echo fd error check fd=42
+	@echo you should do error handling and free after read bufs
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_fd_error.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_fd_error.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_fd_error.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_fd_error.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_fd_error.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc -Wno-format -I ${INCDIR} -g -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_fd_error.c
+	@./a.out
+
+tg2:
+	@clear
+	@echo fd error check fd=5000
+	@echo you should do error handling and free after read bufs
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_fd_error2.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_fd_error2.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_fd_error2.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_fd_error2.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_fd_error2.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_fd_error2.c
+	@./a.out
+
+tg3:
+	@clear
+	@echo stdio check
+	@echo you should do free saved_line/static
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_stdio.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_stdio.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_stdio.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_stdio.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_stdio.c
+	@./a.out
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_stdio.c
+	@./a.out
+
+tg4:
+	@clear
+	@echo test2 check
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/empty.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/empty.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/empty.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/empty.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/empty.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/empty.txt
+
+tg5:
+	@clear
+	@echo without_line_breaks_1 check
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt
+
+tg6:
+	@clear
+	@echo test2 check
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test2.txt
+
+tg7:
+	@clear
+	@echo test_long_line check
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test_long_line.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test_long_line.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test_long_line.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test_long_line.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test_long_line.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_s.c
+	@./a.out ${TESTDIR}/test_long_line.txt
+
+tgb1:
+	@clear
+	@echo test1 check
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/test1.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/test1.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/test1.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/test1.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/test1.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/test1.txt ${TESTDIR}/test2.txt
+
+tgb2:
+	@clear
+	@echo test1 check
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/empty.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/empty.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/empty.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/empty.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/empty.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/empty.txt ${TESTDIR}/test2.txt
+
+tgb3:
+	@clear
+	@echo test1 check
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/without_line_breaks_1.txt ${TESTDIR}/test2.txt
+
+tgb4:
+	@clear
+	@echo test1 check
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/long_line.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/long_line.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/long_line.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/long_line.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/long_line.txt ${TESTDIR}/test2.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_seg.c
+	@./a.out ${TESTDIR}/long_line.txt ${TESTDIR}/test2.txt
+
+tgb5:
+	@clear
+	@echo test1 check
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1 ../get_next_line.c ../get_next_line_utils.c main_io_file.c
+	@./a.out ${TESTDIR}/long_line.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1025
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1025 ../get_next_line.c ../get_next_line_utils.c main_io_file.c
+	@./a.out ${TESTDIR}/long_line.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=1023
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=1023 ../get_next_line.c ../get_next_line_utils.c main_io_file.c
+	@./a.out ${TESTDIR}/long_line.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483647
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483647 ../get_next_line.c ../get_next_line_utils.c main_io_file.c
+	@./a.out ${TESTDIR}/long_line.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=2147483648 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=2147483648 ../get_next_line.c ../get_next_line_utils.c main_io_file.c
+	@./a.out ${TESTDIR}/long_line.txt
+	@echo ________________________________________________________________________________________
+	@echo BUFFER_SIZE=-100 error
+	@gcc ${CFLAGS} -fsanitize=address -D BUFFER_SIZE=-100 ../get_next_line.c ../get_next_line_utils.c main_io_file.c
+	@./a.out ${TESTDIR}/long_line.txt
+
+
 clean:
 	${RM} ${OBJ} ${OBJ_BO} main_ret.o main_files.o
 	@echo "\`gnl\` [INFO] Object files removed"
